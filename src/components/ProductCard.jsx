@@ -2,8 +2,9 @@ import { useContext } from 'react';
 import { FavoritesContext } from '../context/FavoritesContext.jsx';
 import { memo } from 'react';
 
-const ProductCard = memo(({product}) => {
+const ProductCard = memo(({product, setrecentlyViewed, handleProductsCompare, productsCompare}) => {
     const {isFavorite, toggleFavorite} = useContext(FavoritesContext);
+    const exist = productsCompare.some(item => item.id === product.id)
     return (
       <>
 			<div className='item'>
@@ -22,8 +23,14 @@ const ProductCard = memo(({product}) => {
                         }
                     </button>
 
-                    <button>
+                    <button onClick={() => setrecentlyViewed(product)}>
                         Ver producto
+                    </button>
+
+                    <button onClick={() => handleProductsCompare(product) }>
+                        {
+                            exist ? "Quitar" : "Comparar"
+                        }
                     </button>
 
                 </div>

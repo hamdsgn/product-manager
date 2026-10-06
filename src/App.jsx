@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from 'react'
+import { useState, useEffect, useMemo, useCallback, use } from 'react'
 import ProductList from './components/ProductList.jsx'
 import { Header } from './components/Header.jsx';
 import ProductSearch from './components/ProductSearch.jsx';
@@ -12,19 +12,23 @@ function App() {
   const [error, setError] = useState(null);
   const [counter, setCounter] = useState(0);
   const [page, setPage] = useState(1);
-  const [viewProduct, setViewProduct] = useState(0);
+  const [recentlyViewed, setrecentlyViewed] = useState([]);
+  const [productsCompare, setProductsCompare] = useState([]);
+
 
 	const getProducts = useCallback(async ()=>{
 		setLoading(true);
 		setError(null);
 		
 		try {
-			const response = await fetch("https://fakestoreapi.com/products");
+			const response = await fetch("/json/LocalProducts.json");
+			// const response = await fetch("https://fakestoreapi.com/products");
 			if (!response.ok) {
 				throw new Error("No se pudo conectar con el servidor");
 			}
 			const datos = await response.json();
-			setProducts(datos)
+			setProducts(Array.isArray(datos) ? datos : datos.products ?? []);
+			// setProducts(datos)
 		}catch(e){
 			setError(e.message);
   			console.error(e);
@@ -79,6 +83,43 @@ function App() {
 	const handleTester = useCallback(() => {
 		setCounter(current => current + 1);
 	}, []);
+
+	const handlerecentlyViewed = (product) => {
+		setrecentlyViewed(current => {
+			const filtered = current.filter(
+				item => item.id !== product.id
+			)
+
+			const updated = [product, ...filtered]
+
+			return updated.slice(0,3)
+		});
+	}
+
+	const handleProductsCompare = (product) => {
+		setProductsCompare(current =>{
+
+			const exist = current.some(item => item.id === product.id)
+
+			if (exist === true){
+				const addCompare =  current.filter(
+					item => item.id !== product.id
+				)
+				
+				console.log("Quitado")
+				return addCompare
+			} else {
+				if(current.length < 3){
+
+					console.log("Añadido")
+					return [...current, product]
+				}else{
+					console.log("Has alcanzado el máximo")
+					return current
+				}
+			}
+		})
+	}
 	
 	
 	if (loading) {
@@ -100,6 +141,19 @@ function App() {
 		<>
 			<header>
 				<Header/>
+
+
+				<p>Ultimos visitados: {recentlyViewed.length}</p>
+				<ul>
+					{
+						recentlyViewed.map(product=> (
+								<li key={product.id}>
+									{product.title}
+								</li>
+							)
+						)
+					}
+				</ul>
 			</header>
 
 
@@ -136,7 +190,9 @@ function App() {
 					: 	<ProductList 
 							products={currentProduct}
 							onTest={handleTester}
-							viewProduct={setViewProduct}
+							setrecentlyViewed={handlerecentlyViewed}
+							handleProductsCompare = {handleProductsCompare}
+							productsCompare={productsCompare}
 						/>
 				}
 			</div>
