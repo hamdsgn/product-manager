@@ -40,3 +40,7 @@ img{
 .productContent, .searchContent, header, .pagination{
     padding: 0 10%;
 }
+
+.products-compare{
+    display: flex;
+}

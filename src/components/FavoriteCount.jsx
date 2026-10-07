@@ -6,7 +6,7 @@ function FavoriteCount() {
     const {favorites} = useContext(FavoritesContext);
 
   return (
-    <p>{favorites.length} favoritos</p>
+    <h2>Favoritos: {favorites.length}</h2>
   )
 }
 

@@ -1,7 +1,8 @@
 import { useState, useEffect, useMemo, useCallback, use } from 'react'
 import ProductList from './components/ProductList.jsx'
-import { Header } from './components/Header.jsx';
+import { Favorites } from './components/Favorites.jsx';
 import ProductSearch from './components/ProductSearch.jsx';
+import ComparePanel from './components/ComparePanel.jsx';
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -120,6 +121,12 @@ function App() {
 			}
 		})
 	}
+
+	const handleRemoveProductCompare = (product) => {
+		setProductsCompare(current=> {
+			return current.filter(item => item.id !== product.id)
+		})
+	}
 	
 	
 	if (loading) {
@@ -140,26 +147,33 @@ function App() {
 	return (
 		<>
 			<header>
-				<Header/>
+				<Favorites/>
 
+				<hr />
 
-				<p>Ultimos visitados: {recentlyViewed.length}</p>
+				<h2>Ultimos visitados: {recentlyViewed.length}</h2>
 				<ul>
 					{
 						recentlyViewed.map(product=> (
 								<li key={product.id}>
 									{product.title}
 								</li>
-							)
-						)
+							))
 					}
 				</ul>
+
+				<hr />
+
+				<ComparePanel
+					productsCompare = {productsCompare}
+					handleRemoveProductCompare = {handleRemoveProductCompare}
+				/>
 			</header>
 
 
 			<hr />
 			<div className="searchContent">
-				<ProductSearch 
+				<ProductSearch
 					products={products}
 					searchCat={searchCat}
 					searchTerm={searchTerm}

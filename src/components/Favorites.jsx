@@ -2,7 +2,7 @@ import { useState } from 'react';
 import FavoriteList from './FavoriteList.jsx';
 import FavoriteCount from './FavoriteCount.jsx';
 
-export function Header() {
+export function Favorites() {
     const [showFavorites, setShowFavorites] = useState(false);
 
     function handleShowFavorites() {
