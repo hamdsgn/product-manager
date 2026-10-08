@@ -7,14 +7,15 @@ import ComparePanel from './components/ComparePanel.jsx';
 function App() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchCat, setSearchCat] = useState("todas");
-  const [searchOrder, setSearchOrder] = useState("1")
+  const [searchTerm, setSearchTerm] = useState(localStorage.getItem('searchTerm') || "");
+  const [searchCat, setSearchCat] = useState(localStorage.getItem('searchCat') || "todas");
+  const [searchOrder, setSearchOrder] = useState(localStorage.getItem('searchOrder') || "1")
   const [error, setError] = useState(null);
   const [counter, setCounter] = useState(0);
   const [page, setPage] = useState(1);
   const [recentlyViewed, setrecentlyViewed] = useState([]);
   const [productsCompare, setProductsCompare] = useState([]);
+  const [showMessageCompare, setShowMessageCompare] = useState(false);
 
 
 	const getProducts = useCallback(async ()=>{
@@ -22,8 +23,8 @@ function App() {
 		setError(null);
 		
 		try {
-			const response = await fetch("/json/LocalProducts.json");
-			// const response = await fetch("https://fakestoreapi.com/products");
+			// const response = await fetch("/json/LocalProducts.json");
+			const response = await fetch("https://fakestoreapi.com/products");
 			if (!response.ok) {
 				throw new Error("No se pudo conectar con el servidor");
 			}
@@ -45,6 +46,12 @@ function App() {
 	useEffect(()=>{
 		setPage(1)
 	}, [searchTerm, searchCat, searchOrder])
+
+	useEffect(()=>{
+		localStorage.setItem('searchCat', searchCat)
+		localStorage.setItem('searchTerm', searchTerm)
+		localStorage.setItem('searchOrder', searchOrder)
+	},[searchCat, searchTerm, searchOrder])
 
 	const filteredProducts = useMemo(() => {
 		console.log("🔥 Calculando filtros");
@@ -112,12 +119,18 @@ function App() {
 			} else {
 				if(current.length < 3){
 
-					console.log("Añadido")
-					return [...current, product]
-				}else{
-					console.log("Has alcanzado el máximo")
-					return current
+					const update = [...current, product]
+
+					if(update.length === 3){
+						console.log("Has alcanzado el máximo")
+						setShowMessageCompare(true)
+						setTimeout(() => {
+							setShowMessageCompare(false)
+						}, 3000)
+					}
+					return update
 				}
+				return current
 			}
 		})
 	}
@@ -196,6 +209,10 @@ function App() {
 			</button> */}
 
 			<hr />
+
+			{showMessageCompare && (
+				<p className='message-compare'>Has alcanzado el limite de productos para comparar</p>
+			)}
 
 			<div className='productContent'>
 				{

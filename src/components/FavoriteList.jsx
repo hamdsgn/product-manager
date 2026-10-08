@@ -2,18 +2,25 @@ import { useContext } from 'react';
 import { FavoritesContext } from '../context/FavoritesContext.jsx';
 
 function FavoriteList() {
-    const {favorites, toggleFavorite} = useContext(FavoritesContext);
+    const {favorites, toggleFavorite, handleClearFavorites} = useContext(FavoritesContext);
 
     return (
-        <ul>
-            {favorites.map(favorite => (
-                <li key={favorite.id}>
-                    {favorite.title}
-                    <button onClick={() => toggleFavorite(favorite)}>Quitar</button>
-                </li>
-                
-            ))}
-        </ul>
+        <div>
+            <ul>
+                {favorites.map(favorite => (
+                    <li key={favorite.id}>
+                        {favorite.title}
+                        <button onClick={() => toggleFavorite(favorite)}>Quitar</button>
+                    </li>
+                    
+                ))}
+            </ul>
+            { favorites.length > 0 && (
+                <button onClick={() => handleClearFavorites()}>
+                    Limpiar Favoritos
+                </button>
+            )}
+        </div>
     )
 }
 

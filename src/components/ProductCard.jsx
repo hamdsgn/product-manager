@@ -9,7 +9,7 @@ const ProductCard = memo(({product, setrecentlyViewed, handleProductsCompare, pr
       <>
 			<div className='item'>
                 <div className="item__left">
-                    {/* <img width={150} height={150} src={product.image}/> */}
+                    <img width={150} height={150} src={product.image}/>
                 </div>
                 <div className="item__right">
                     <h3>{product.title}</h3>
@@ -27,7 +27,10 @@ const ProductCard = memo(({product, setrecentlyViewed, handleProductsCompare, pr
                         Ver producto
                     </button>
 
-                    <button onClick={() => handleProductsCompare(product) }>
+                    <button 
+                        onClick={() => handleProductsCompare(product) }
+                        disabled={productsCompare.length === 3 && !exist}
+                    >
                         {
                             exist ? "Quitar" : "Comparar"
                         }

@@ -1,9 +1,13 @@
-import { useState, createContext } from 'react'
+import { useState, createContext, useEffect } from 'react'
 
 export const FavoritesContext = createContext(null);
 
 export const FavoritesProvider = ({children}) => {
-	const [favorites, setFavorites] = useState([]);
+	const [favorites, setFavorites] = useState(JSON.parse(localStorage.getItem('favorites')) || []);
+
+	useEffect(()=>{
+		localStorage.setItem('favorites', JSON.stringify(favorites));
+	}, [favorites]);
 	
 	function isFavorite(product) {
 		return favorites.some ( 
@@ -18,9 +22,14 @@ export const FavoritesProvider = ({children}) => {
 			setFavorites(current => [...current, product])
 		}
 	}
+
+	const handleClearFavorites = () =>{
+		setFavorites([]);
+		localStorage.removeItem('favorites')
+	}
 	
 	return(
-		<FavoritesContext.Provider value={{favorites, isFavorite, toggleFavorite}}>
+		<FavoritesContext.Provider value={{favorites, isFavorite, toggleFavorite, handleClearFavorites}}>
 			{children}
 		</FavoritesContext.Provider>
 	)
