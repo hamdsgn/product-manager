@@ -9,7 +9,7 @@ function ComparePanel( {productsCompare, handleRemoveProductCompare} ) {
                     <li key={item.id}>
                         <p>{item.title}</p>
                         <p>{item.price}</p>
-                        <button onClick={() => handleRemoveProductCompare(item)}>
+                        <button className="btn btn--secondary" onClick={() => handleRemoveProductCompare(item)}>
                             Quitar
                         </button>
                     </li>

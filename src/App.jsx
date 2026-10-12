@@ -3,6 +3,7 @@ import ProductList from './components/ProductList.jsx'
 import { Favorites } from './components/Favorites.jsx';
 import ProductSearch from './components/ProductSearch.jsx';
 import ComparePanel from './components/ComparePanel.jsx';
+import Cart from './components/Cart.jsx';
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -16,6 +17,9 @@ function App() {
   const [recentlyViewed, setrecentlyViewed] = useState([]);
   const [productsCompare, setProductsCompare] = useState([]);
   const [showMessageCompare, setShowMessageCompare] = useState(false);
+  	const [cart, setCart] = useState(() => {
+		return JSON.parse(localStorage.getItem('cart')) || []
+	});
 
 
 	const getProducts = useCallback(async ()=>{
@@ -52,6 +56,10 @@ function App() {
 		localStorage.setItem('searchTerm', searchTerm)
 		localStorage.setItem('searchOrder', searchOrder)
 	},[searchCat, searchTerm, searchOrder])
+
+	useEffect(()=>{
+		localStorage.setItem('cart', JSON.stringify(cart))
+	}, [cart])
 
 	const filteredProducts = useMemo(() => {
 		console.log("🔥 Calculando filtros");
@@ -140,6 +148,48 @@ function App() {
 			return current.filter(item => item.id !== product.id)
 		})
 	}
+
+	const handleAddToCart = (product) => {
+		const exist = cart.some(item => item.id === product.id)
+
+		if(exist){
+			const updateCart = cart.map(item => {
+				if(item.id === product.id){
+					return{
+						...item,
+						quantity: item.quantity + 1
+					};
+				}
+				return item;
+			});
+			setCart(updateCart);
+		}else{
+			setCart(current=> [...current, {...product, quantity:1}])
+		}
+	}
+
+	const handleDecreaseQuantity = (product) => {
+		if(product.quantity > 1){
+			const decrease =  cart.map(item => {
+				if(item.id === product.id) {
+					return {...item, quantity: item.quantity -1}
+				}
+				return item
+			})
+			setCart(decrease)
+		}else{
+			setCart(current => current.filter(item =>  item.id !== product.id))
+
+		}
+	}
+
+	const handleRemoveProduct = (product) => {
+		setCart (current => current.filter(item => item.id !== product.id))
+	}
+
+	const totalCart = cart.reduce((acumulador, item)=> {
+		return acumulador + (item.price * item.quantity);
+	}, 0);
 	
 	
 	if (loading) {
@@ -152,7 +202,7 @@ function App() {
 				<p className="error-message">
 					❌ {error}
 				</p>
-				<button onClick={getProducts}>Reintentar</button>
+				<button className="btn btn--secondary" onClick={getProducts}>Reintentar</button>
 			</>
 		)
 	}
@@ -181,69 +231,85 @@ function App() {
 					productsCompare = {productsCompare}
 					handleRemoveProductCompare = {handleRemoveProductCompare}
 				/>
+
+				<hr />
+				{cart.length > 0 ? (
+					<Cart
+						handleAddToCart = {handleAddToCart}
+						handleDecreaseQuantity = {handleDecreaseQuantity}
+						handleRemoveProduct = {handleRemoveProduct}
+						totalCart = {totalCart}
+						cart = {cart}
+					/>
+				) : (
+					<h2>Mi carrito: Vacío</h2>
+				)}
 			</header>
-
-
-			<hr />
-			<div className="searchContent">
-				<ProductSearch
-					products={products}
-					searchCat={searchCat}
-					searchTerm={searchTerm}
-					setSearchTerm={setSearchTerm} 
-					setSearchCat={setSearchCat}
-					searchOrder={searchOrder}
-					setSearchOrder={setSearchOrder}
-				/>
-				{totalProducts > 0 
-						? <p>Se han encontrado {totalProducts} productos</p> 
-						: <p>No se han encontrado productos</p>
-				}
-			</div>
-
-			{/* <hr /> */}
-
-			{/* <p>Contador : {counter}</p>
-			<button onClick={handleTester}>
-				probar render
-			</button> */}
-
-			<hr />
 
 			{showMessageCompare && (
 				<p className='message-compare'>Has alcanzado el limite de productos para comparar</p>
 			)}
 
-			<div className='productContent'>
-				{
-					(filteredProducts.length === 0 )
-					? 	"⚠️ No se encontraron productos que coincidan con la búsqueda." 
-					: 	<ProductList 
-							products={currentProduct}
-							onTest={handleTester}
-							setrecentlyViewed={handlerecentlyViewed}
-							handleProductsCompare = {handleProductsCompare}
-							productsCompare={productsCompare}
-						/>
-				}
-			</div>
-			{filteredProducts.length > 0 && (
-					<div className="pagination">
-						<button 
-							onClick={() => setPage(page - 1)} 
-							disabled={page===1}
-						>
-							Anterior
-						</button>
-						<p>página <span>{page}</span> de {totalPages}</p>
-						<button 
-							onClick={()=> setPage(page + 1)}
-							disabled={page === totalPages}
-						>
-							Siguiente
-						</button>
+			<section>
+				<main>
+					<div className="main-content">
+
+						<div className="main-content__search">
+							<h2>Buscar productos</h2>
+							<div className="main-content__searchBox">
+								<ProductSearch
+									products={products}
+									searchCat={searchCat}
+									searchTerm={searchTerm}
+									setSearchTerm={setSearchTerm} 
+									setSearchCat={setSearchCat}
+									searchOrder={searchOrder}
+									setSearchOrder={setSearchOrder}
+								/>
+							</div>
+							
+						</div>
+
+						<div className='main-content__products'>
+							{totalProducts > 0 
+									? <h2>{totalProducts} productos encontrados</h2> 
+									: <h2>No se han encontrado productos</h2>
+							}
+							{
+								(filteredProducts.length === 0 )
+								? 	"⚠️ No se encontraron productos que coincidan con la búsqueda." 
+								: 	<ProductList 
+										products={currentProduct}
+										onTest={handleTester}
+										setrecentlyViewed={handlerecentlyViewed}
+										handleProductsCompare = {handleProductsCompare}
+										productsCompare={productsCompare}
+										handleAddToCart = {handleAddToCart}
+									/>
+							}
+						</div>
 					</div>
-				) }
+				</main>
+
+				{filteredProducts.length > 0 && (
+						<div className="pagination">
+							<button className="btn btn--secondary" 
+								onClick={() => setPage(page - 1)} 
+								disabled={page===1}
+							>
+								Prev
+							</button>
+							<p>página <span>{page}</span> de {totalPages}</p>
+							<button className="btn btn--secondary" 
+								onClick={()=> setPage(page + 1)}
+								disabled={page === totalPages}
+							>
+								Next
+							</button>
+						</div>
+				)}
+			</section>
+
 			
 			
 		</>

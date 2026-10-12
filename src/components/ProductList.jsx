@@ -1,7 +1,7 @@
 import ProductCard from './ProductCard.jsx'
 import './styleComponents.css';
 
-const ProductList = ({products, onTest, setrecentlyViewed, handleProductsCompare, productsCompare}) => {
+const ProductList = ({products, onTest, setrecentlyViewed, handleProductsCompare, productsCompare, handleAddToCart}) => {
   return (
     <ul className='productList'>
         {
@@ -13,6 +13,7 @@ const ProductList = ({products, onTest, setrecentlyViewed, handleProductsCompare
                     setrecentlyViewed = {setrecentlyViewed}
                     handleProductsCompare = {handleProductsCompare}
                     productsCompare = {productsCompare}
+                    handleAddToCart = {handleAddToCart}
                 />
             ))
         }

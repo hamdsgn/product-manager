@@ -10,13 +10,13 @@ function FavoriteList() {
                 {favorites.map(favorite => (
                     <li key={favorite.id}>
                         {favorite.title}
-                        <button onClick={() => toggleFavorite(favorite)}>Quitar</button>
+                        <button className="btn btn--secondary" onClick={() => toggleFavorite(favorite)}>Quitar</button>
                     </li>
                     
                 ))}
             </ul>
             { favorites.length > 0 && (
-                <button onClick={() => handleClearFavorites()}>
+                <button className="btn btn--secondary" onClick={() => handleClearFavorites()}>
                     Limpiar Favoritos
                 </button>
             )}

@@ -13,7 +13,7 @@ export function Favorites() {
         <>
             <FavoriteCount />
             
-            <button onClick={handleShowFavorites}>
+            <button className="btn btn--secondary" onClick={handleShowFavorites}>
                 {showFavorites ? "Ocultar favoritos" : "Mostrar Favoritos"}
             </button>
 
