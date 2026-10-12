@@ -1,6 +1,9 @@
-import React from 'react'
+import { useContext } from "react";
+import { CartContext } from "../context/CartContext.jsx"
 
-function Cart({handleAddToCart, handleDecreaseQuantity, totalCart,handleRemoveProduct, cart}) {
+function Cart() {
+    const {cart, handleAddToCart, handleDecreaseQuantity, handleRemoveProduct, totalCart} = useContext(CartContext);
+
   return (
     <div className='carrito'>
         <h2>Mi carrito</h2>

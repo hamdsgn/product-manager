@@ -1,8 +1,10 @@
 import { useContext } from 'react';
 import { FavoritesContext } from '../context/FavoritesContext.jsx';
 import { memo } from 'react';
+import { CartContext } from '../context/CartContext.jsx';
 
-const ProductCard = memo(({product, setrecentlyViewed, handleProductsCompare, productsCompare, handleAddToCart}) => {
+const ProductCard = memo(({product, setrecentlyViewed, handleProductsCompare, productsCompare}) => {
+    const {handleAddToCart} = useContext(CartContext);
     const {isFavorite, toggleFavorite} = useContext(FavoritesContext);
     const exist = productsCompare.some(item => item.id === product.id)
     return (

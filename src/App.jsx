@@ -1,9 +1,10 @@
-import { useState, useEffect, useMemo, useCallback, use } from 'react'
+import { useState, useEffect, useMemo, useCallback, use, useContext } from 'react'
 import ProductList from './components/ProductList.jsx'
 import { Favorites } from './components/Favorites.jsx';
 import ProductSearch from './components/ProductSearch.jsx';
 import ComparePanel from './components/ComparePanel.jsx';
 import Cart from './components/Cart.jsx';
+import { CartContext } from './context/CartContext.jsx';
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -17,9 +18,7 @@ function App() {
   const [recentlyViewed, setrecentlyViewed] = useState([]);
   const [productsCompare, setProductsCompare] = useState([]);
   const [showMessageCompare, setShowMessageCompare] = useState(false);
-  	const [cart, setCart] = useState(() => {
-		return JSON.parse(localStorage.getItem('cart')) || []
-	});
+  const {cart} = useContext(CartContext)
 
 
 	const getProducts = useCallback(async ()=>{
@@ -56,10 +55,6 @@ function App() {
 		localStorage.setItem('searchTerm', searchTerm)
 		localStorage.setItem('searchOrder', searchOrder)
 	},[searchCat, searchTerm, searchOrder])
-
-	useEffect(()=>{
-		localStorage.setItem('cart', JSON.stringify(cart))
-	}, [cart])
 
 	const filteredProducts = useMemo(() => {
 		console.log("🔥 Calculando filtros");
@@ -148,48 +143,6 @@ function App() {
 			return current.filter(item => item.id !== product.id)
 		})
 	}
-
-	const handleAddToCart = (product) => {
-		const exist = cart.some(item => item.id === product.id)
-
-		if(exist){
-			const updateCart = cart.map(item => {
-				if(item.id === product.id){
-					return{
-						...item,
-						quantity: item.quantity + 1
-					};
-				}
-				return item;
-			});
-			setCart(updateCart);
-		}else{
-			setCart(current=> [...current, {...product, quantity:1}])
-		}
-	}
-
-	const handleDecreaseQuantity = (product) => {
-		if(product.quantity > 1){
-			const decrease =  cart.map(item => {
-				if(item.id === product.id) {
-					return {...item, quantity: item.quantity -1}
-				}
-				return item
-			})
-			setCart(decrease)
-		}else{
-			setCart(current => current.filter(item =>  item.id !== product.id))
-
-		}
-	}
-
-	const handleRemoveProduct = (product) => {
-		setCart (current => current.filter(item => item.id !== product.id))
-	}
-
-	const totalCart = cart.reduce((acumulador, item)=> {
-		return acumulador + (item.price * item.quantity);
-	}, 0);
 	
 	
 	if (loading) {
@@ -233,17 +186,12 @@ function App() {
 				/>
 
 				<hr />
-				{cart.length > 0 ? (
-					<Cart
-						handleAddToCart = {handleAddToCart}
-						handleDecreaseQuantity = {handleDecreaseQuantity}
-						handleRemoveProduct = {handleRemoveProduct}
-						totalCart = {totalCart}
-						cart = {cart}
-					/>
-				) : (
+				{/* <Cart/> */}
+				{cart.length > 0 ? ( 
+					<Cart/>
+				 ) : (
 					<h2>Mi carrito: Vacío</h2>
-				)}
+				)} 
 			</header>
 
 			{showMessageCompare && (
@@ -284,7 +232,6 @@ function App() {
 										setrecentlyViewed={handlerecentlyViewed}
 										handleProductsCompare = {handleProductsCompare}
 										productsCompare={productsCompare}
-										handleAddToCart = {handleAddToCart}
 									/>
 							}
 						</div>
