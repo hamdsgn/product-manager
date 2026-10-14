@@ -304,6 +304,24 @@ header,
     background: #eaeae2;
 }
 
+.iconButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    color: var(--color-text);
+    background: transparent;
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 180ms ease;
+}
+
+.iconButton:hover {
+    background: #eaeae2;
+}
+
 
 /* ========================================
    6. CABECERA
