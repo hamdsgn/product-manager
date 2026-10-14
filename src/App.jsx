@@ -5,7 +5,7 @@ import ProductSearch from './components/ProductSearch.jsx';
 import ComparePanel from './components/ComparePanel.jsx';
 import Cart from './components/Cart.jsx';
 import { CartContext } from './context/CartContext.jsx';
-import {ShoppingCart, Heart, Scale, History} from 'lucide-react';
+import QuickAccessMenu from './components/QuickAccessMenu.jsx';
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -19,7 +19,7 @@ function App() {
   const [recentlyViewed, setrecentlyViewed] = useState([]);
   const [productsCompare, setProductsCompare] = useState([]);
   const [showMessageCompare, setShowMessageCompare] = useState(false);
-  const {cart} = useContext(CartContext)
+ 
 
 
 	const getProducts = useCallback(async ()=>{
@@ -164,20 +164,8 @@ function App() {
 	return (
 		<>
 			<header>
-				<div className='popovers'>
-					<button className="iconButton">
-						<Heart size={18} strokeWidth={1.8} />
-					</button>
-					<button className="iconButton">
-						<History size={18} strokeWidth={1.8} />
-					</button>
-					<button className="iconButton">
-						<Scale size={18} strokeWidth={1.8} />
-					</button>
-					<button className="iconButton">
-						<ShoppingCart size={18} strokeWidth={1.8} />
-					</button>
-				</div>
+				<QuickAccessMenu/>
+				
 				<Favorites/>
 
 				<hr />
@@ -199,14 +187,6 @@ function App() {
 					productsCompare = {productsCompare}
 					handleRemoveProductCompare = {handleRemoveProductCompare}
 				/>
-
-				<hr />
-				{/* <Cart/> */}
-				{cart.length > 0 ? ( 
-					<Cart/>
-				 ) : (
-					<h2>Mi carrito: Vacío</h2>
-				)} 
 			</header>
 
 			{showMessageCompare && (
