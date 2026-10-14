@@ -6,7 +6,6 @@ function Cart() {
 
   return (
     <div className='carrito'>
-        <h2>Mi carrito</h2>
         <ul>
         {cart.map(item => (
             <li key={item.id} className='carrito__row'>
@@ -34,7 +33,6 @@ function Cart() {
             </li>
         ))}
         </ul>
-        <hr />
         <div className='carrito__total'>
             <p>Total del carrito</p>
             <p>{totalCart.toFixed(2)}</p>

@@ -1,10 +1,7 @@
 import { useState, useEffect, useMemo, useCallback, use, useContext } from 'react'
 import ProductList from './components/ProductList.jsx'
-import { Favorites } from './components/Favorites.jsx';
 import ProductSearch from './components/ProductSearch.jsx';
 import ComparePanel from './components/ComparePanel.jsx';
-import Cart from './components/Cart.jsx';
-import { CartContext } from './context/CartContext.jsx';
 import QuickAccessMenu from './components/QuickAccessMenu.jsx';
 
 function App() {
@@ -163,31 +160,27 @@ function App() {
 	
 	return (
 		<>
-			<header>
+			<header className='header'>
+				<h1>Mi Tienda</h1>
 				<QuickAccessMenu/>
-				
-				<Favorites/>
-
-				<hr />
-
-				<h2>Ultimos visitados: {recentlyViewed.length}</h2>
-				<ul>
-					{
-						recentlyViewed.map(product=> (
-								<li key={product.id}>
-									{product.title}
-								</li>
-							))
-					}
-				</ul>
-
-				<hr />
-
-				<ComparePanel
-					productsCompare = {productsCompare}
-					handleRemoveProductCompare = {handleRemoveProductCompare}
-				/>
 			</header>
+			<h2>Ultimos visitados: {recentlyViewed.length}</h2>
+			<ul>
+				{
+					recentlyViewed.map(product=> (
+							<li key={product.id}>
+								{product.title}
+							</li>
+						))
+				}
+			</ul>
+
+			<hr />
+
+			<ComparePanel
+				productsCompare = {productsCompare}
+				handleRemoveProductCompare = {handleRemoveProductCompare}
+			/>
 
 			{showMessageCompare && (
 				<p className='message-compare'>Has alcanzado el limite de productos para comparar</p>

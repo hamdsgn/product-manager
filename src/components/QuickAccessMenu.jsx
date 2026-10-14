@@ -1,11 +1,14 @@
 import { useContext, useState } from 'react';
 import { CartContext } from '../context/CartContext';
+import FavoriteList from './FavoriteList.jsx';
+import { FavoritesContext } from '../context/FavoritesContext';
 import {ShoppingCart, Heart, Scale, History} from 'lucide-react';
 import Cart from './Cart';
 
 function QuickAccessMenu() {
     const [activePopover, setActivePopover] = useState(null);
     const {cart} = useContext(CartContext);
+    const {favorites} = useContext(FavoritesContext)
     const cartCount = cart.reduce(
         (total, item) => total + item.quantity,
         0
@@ -14,8 +17,17 @@ function QuickAccessMenu() {
     <div className="quickAccess">
 
         <div className='popovers'>
-            <button className="iconButton">
+            <button 
+                className="iconButton"
+                aria-label = {`Favoritos, ${favorites.length}`}
+                onClick={() => setActivePopover(current => current === "favorite" ? null : "favorite")}
+            >
                 <Heart size={18} strokeWidth={1.8} />
+                {favorites.length > 0 && (
+                    <span className="iconButton__badge">
+                        {favorites.length}
+                    </span>
+                )}
             </button>
             <button className="iconButton">
                 <History size={18} strokeWidth={1.8} />
@@ -40,10 +52,19 @@ function QuickAccessMenu() {
         {
             activePopover === 'cart' && (
                 <div className="popoverPanel">
-                    <Cart/>
+                    { cart.length > 0 
+                        ? <Cart/>
+                        : <p>Carrito Vacío</p>
+                    }
                 </div>
             )
         }
+        {
+            activePopover === 'favorite' && (
+                <div className="popoverPanel">
+                    <FavoriteList/>
+                </div>
+            )}
     </div>
   )
 }
