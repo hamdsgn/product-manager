@@ -3,10 +3,12 @@ import { FavoritesContext } from '../context/FavoritesContext.jsx';
 import { memo } from 'react';
 import { CartContext } from '../context/CartContext.jsx';
 import {ShoppingCart, HeartPlus, HeartMinus, Scale} from 'lucide-react';
+import { RecentlyViewedContext } from '../context/RecentlyViewedContext.jsx';
 
 const ProductCard = memo(({product, setrecentlyViewed, handleProductsCompare, productsCompare}) => {
     const {handleAddToCart} = useContext(CartContext);
     const {isFavorite, toggleFavorite} = useContext(FavoritesContext);
+    const {handlerecentlyViewed} = useContext(RecentlyViewedContext)
     const exist = productsCompare.some(item => item.id === product.id)
     return (
       <>
@@ -38,16 +40,17 @@ const ProductCard = memo(({product, setrecentlyViewed, handleProductsCompare, pr
                     <p>{product.category}</p>
                     <p><b>{product.price} €</b></p>
                     
-                    
+                    <div className='cart-buttons'>
+                        <button className="btn btn--secondary" onClick={() => handlerecentlyViewed(product)}>
+                            Ver
+                        </button>
 
-                    <button className="btn btn--secondary" onClick={() => setrecentlyViewed(product)}>
-                        Ver detalles
-                    </button>
+                        <button className="btn btn--accent" onClick={() => handleAddToCart(product)}>
+                            <ShoppingCart size={18} strokeWidth={1.8} />
+                            Comprar
+                        </button>
+                    </div>
 
-                    <button className="btn btn--accent" onClick={() => handleAddToCart(product)}>
-                        <ShoppingCart size={18} strokeWidth={1.8} />
-                        Añadir al carrito
-                    </button>
 
                 </div>
                 {/* {console.log("ProductCard render:", product.title)} */}

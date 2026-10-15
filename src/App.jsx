@@ -13,7 +13,6 @@ function App() {
   const [error, setError] = useState(null);
   const [counter, setCounter] = useState(0);
   const [page, setPage] = useState(1);
-  const [recentlyViewed, setrecentlyViewed] = useState([]);
   const [productsCompare, setProductsCompare] = useState([]);
   const [showMessageCompare, setShowMessageCompare] = useState(false);
  
@@ -93,18 +92,6 @@ function App() {
 		setCounter(current => current + 1);
 	}, []);
 
-	const handlerecentlyViewed = (product) => {
-		setrecentlyViewed(current => {
-			const filtered = current.filter(
-				item => item.id !== product.id
-			)
-
-			const updated = [product, ...filtered]
-
-			return updated.slice(0,3)
-		});
-	}
-
 	const handleProductsCompare = (product) => {
 		setProductsCompare(current =>{
 
@@ -164,18 +151,6 @@ function App() {
 				<h1>Mi Tienda</h1>
 				<QuickAccessMenu/>
 			</header>
-			<h2>Ultimos visitados: {recentlyViewed.length}</h2>
-			<ul>
-				{
-					recentlyViewed.map(product=> (
-							<li key={product.id}>
-								{product.title}
-							</li>
-						))
-				}
-			</ul>
-
-			<hr />
 
 			<ComparePanel
 				productsCompare = {productsCompare}
@@ -217,7 +192,6 @@ function App() {
 								: 	<ProductList 
 										products={currentProduct}
 										onTest={handleTester}
-										setrecentlyViewed={handlerecentlyViewed}
 										handleProductsCompare = {handleProductsCompare}
 										productsCompare={productsCompare}
 									/>

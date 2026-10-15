@@ -183,6 +183,10 @@ header,
     font-size: 14px;
     line-height: 1.5;
 }
+.cart-buttons {
+    display: flex;
+    gap: 10px;
+}
 
 
 /* Acciones de las tarjetas */
