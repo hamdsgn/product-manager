@@ -5,12 +5,15 @@ import { RecentlyViewedContext } from '../context/RecentlyViewedContext.jsx';
 import FavoriteList from './FavoriteList.jsx';
 import Cart from './Cart';
 import {ShoppingCart, Heart, Scale, History} from 'lucide-react';
+import { CompareContext } from '../context/CompareContext.jsx';
+import ComparePanel from './ComparePanel.jsx';
 
 function QuickAccessMenu() {
     const [activePopover, setActivePopover] = useState(null);
     const {cart} = useContext(CartContext);
     const {favorites} = useContext(FavoritesContext);
     const {recentlyViewed} = useContext(RecentlyViewedContext);
+    const {productsCompare} = useContext(CompareContext)
     const menuRef = useRef(null)
     const cartCount = cart.reduce(
         (total, item) => total + item.quantity,
@@ -50,7 +53,7 @@ function QuickAccessMenu() {
                 className="iconButton"
                 aria-label={`Últimos visitados: ${recentlyViewed.length}`}
                 aria-expanded={activePopover === "history"}
-                onClick={(() => setActivePopover(current => current === "history" ? null : "history"))}
+                onClick={() => setActivePopover(current => current === "history" ? null : "history")}
             >
                 <History size={18} strokeWidth={1.8} />
                 {recentlyViewed.length > 0 && (
@@ -59,8 +62,18 @@ function QuickAccessMenu() {
                     </span>
                 )}
             </button>
-            <button className="iconButton">
+            <button 
+                className="iconButton"
+                aria-label={`Comparador, ${productsCompare.length} de 3 productos`}
+                aria-expanded={activePopover === "compare"}
+                onClick={() => setActivePopover(current => current === "compare" ? null : "compare" )}
+            >
                 <Scale size={18} strokeWidth={1.8} />
+                {productsCompare.length > 0 && (
+                    <span className='iconButton__badge'>
+                        {productsCompare.length} / 3
+                    </span>
+                )}
             </button>
             <button 
                 className="iconButton" 
@@ -104,6 +117,15 @@ function QuickAccessMenu() {
 
                 }
                 
+            </div>
+        )}
+        {activePopover === "compare" && (
+            <div className="popoverPanel">
+                {productsCompare.length === 0 ? (
+                    <p>No has elegido productos para comparar</p>
+                ):(
+                    <ComparePanel/>
+                )}
             </div>
         )}
     </div>

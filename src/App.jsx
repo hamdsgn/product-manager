@@ -1,8 +1,8 @@
 import { useState, useEffect, useMemo, useCallback, use, useContext } from 'react'
 import ProductList from './components/ProductList.jsx'
 import ProductSearch from './components/ProductSearch.jsx';
-import ComparePanel from './components/ComparePanel.jsx';
 import QuickAccessMenu from './components/QuickAccessMenu.jsx';
+import { CompareContext } from './context/CompareContext.jsx';
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -13,10 +13,7 @@ function App() {
   const [error, setError] = useState(null);
   const [counter, setCounter] = useState(0);
   const [page, setPage] = useState(1);
-  const [productsCompare, setProductsCompare] = useState([]);
-  const [showMessageCompare, setShowMessageCompare] = useState(false);
- 
-
+  const {showMessageCompare} = useContext(CompareContext)
 
 	const getProducts = useCallback(async ()=>{
 		setLoading(true);
@@ -92,42 +89,7 @@ function App() {
 		setCounter(current => current + 1);
 	}, []);
 
-	const handleProductsCompare = (product) => {
-		setProductsCompare(current =>{
 
-			const exist = current.some(item => item.id === product.id)
-
-			if (exist === true){
-				const addCompare =  current.filter(
-					item => item.id !== product.id
-				)
-				
-				console.log("Quitado")
-				return addCompare
-			} else {
-				if(current.length < 3){
-
-					const update = [...current, product]
-
-					if(update.length === 3){
-						console.log("Has alcanzado el máximo")
-						setShowMessageCompare(true)
-						setTimeout(() => {
-							setShowMessageCompare(false)
-						}, 3000)
-					}
-					return update
-				}
-				return current
-			}
-		})
-	}
-
-	const handleRemoveProductCompare = (product) => {
-		setProductsCompare(current=> {
-			return current.filter(item => item.id !== product.id)
-		})
-	}
 	
 	
 	if (loading) {
@@ -151,11 +113,6 @@ function App() {
 				<h1>Mi Tienda</h1>
 				<QuickAccessMenu/>
 			</header>
-
-			<ComparePanel
-				productsCompare = {productsCompare}
-				handleRemoveProductCompare = {handleRemoveProductCompare}
-			/>
 
 			{showMessageCompare && (
 				<p className='message-compare'>Has alcanzado el limite de productos para comparar</p>
@@ -192,8 +149,6 @@ function App() {
 								: 	<ProductList 
 										products={currentProduct}
 										onTest={handleTester}
-										handleProductsCompare = {handleProductsCompare}
-										productsCompare={productsCompare}
 									/>
 							}
 						</div>

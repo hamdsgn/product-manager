@@ -4,12 +4,14 @@ import { memo } from 'react';
 import { CartContext } from '../context/CartContext.jsx';
 import {ShoppingCart, HeartPlus, HeartMinus, Scale} from 'lucide-react';
 import { RecentlyViewedContext } from '../context/RecentlyViewedContext.jsx';
+import { CompareContext } from '../context/CompareContext.jsx';
 
-const ProductCard = memo(({product, setrecentlyViewed, handleProductsCompare, productsCompare}) => {
+const ProductCard = memo(({product}) => {
     const {handleAddToCart} = useContext(CartContext);
     const {isFavorite, toggleFavorite} = useContext(FavoritesContext);
-    const {handlerecentlyViewed} = useContext(RecentlyViewedContext)
-    const exist = productsCompare.some(item => item.id === product.id)
+    const {handlerecentlyViewed} = useContext(RecentlyViewedContext);
+    const {handleProductsCompare, productsCompare} = useContext(CompareContext);
+    const exist = productsCompare.some(item => item.id === product.id);
     return (
       <>
 			<div className='item'>
@@ -53,8 +55,6 @@ const ProductCard = memo(({product, setrecentlyViewed, handleProductsCompare, pr
 
 
                 </div>
-                {/* {console.log("ProductCard render:", product.title)} */}
-                {console.log("Render:", product.title)}
 			</div>
 		</>
     )
