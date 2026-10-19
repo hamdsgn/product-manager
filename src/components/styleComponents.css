@@ -95,6 +95,225 @@ header,
     padding-block: 24px;
 }
 
+/* ========================================
+   PRODUCT SEARCH
+======================================== */
+
+.productSearch {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+
+    width: 100%;
+    padding: 24px;
+
+    background: var(--color-surface, #ffffff);
+    border: 1px solid var(--color-border, #e4e3dc);
+    border-radius: 16px;
+}
+
+/* ========================================
+   BUSCADOR
+======================================== */
+
+.productSearch__input {
+    width: 100%;
+    min-height: 46px;
+    padding: 0 16px;
+
+    color: var(--color-text, #20211e);
+    background: #fafaf7;
+    border: 1px solid var(--color-border, #e4e3dc);
+    border-radius: 10px;
+
+    font-family: inherit;
+    font-size: 14px;
+
+    transition:
+        border-color 180ms ease,
+        box-shadow 180ms ease,
+        background-color 180ms ease;
+}
+
+.productSearch__input::placeholder {
+    color: var(--color-muted, #777970);
+}
+
+.productSearch__input:hover {
+    border-color: #c7c8bd;
+}
+
+.productSearch__input:focus {
+    outline: none;
+    background: #ffffff;
+    border-color: #a7c95c;
+    box-shadow: 0 0 0 3px rgb(196 240 106 / 25%);
+}
+
+/* ========================================
+   SECCIONES DE FILTROS
+======================================== */
+
+.productSearch__section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.productSearch__title {
+    margin: 0;
+
+    color: var(--color-text, #20211e);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+}
+
+/* ========================================
+   OPCIONES DE FILTROS CUADRADAS
+======================================== */
+
+.productSearch__options {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.productSearch__option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    min-height: 38px;
+    padding: 6px 8px;
+
+    color: var(--color-muted, #777970);
+    background: transparent;
+    border-radius: 8px;
+
+    font-size: 14px;
+    font-weight: 400;
+    cursor: pointer;
+
+    transition:
+        color 180ms ease,
+        background-color 180ms ease;
+}
+
+.productSearch__option:hover {
+    color: var(--color-text, #20211e);
+    background: #f7f7f2;
+}
+
+/* Checkbox cuadrado */
+
+.productSearch__option input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+
+    flex: 0 0 18px;
+    width: 18px;
+    height: 18px;
+    min-height: 18px;
+    padding: 0;
+    margin: 0;
+
+    background: #ffffff;
+    border: 1.5px solid #d5d6cc;
+    border-radius: 4px;
+
+    cursor: pointer;
+
+    transition:
+        background-color 180ms ease,
+        border-color 180ms ease;
+}
+
+/* Estado seleccionado: carbón y check verde */
+
+.productSearch__option input[type="radio"]:checked {
+    background-color: var(--color-dark, #252820);
+    border-color: var(--color-dark, #252820);
+
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='m3.5 8 3 3 6-6' fill='none' stroke='%23c4f06a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 14px;
+}
+
+/* Hover */
+
+.productSearch__option input[type="radio"]:not(:checked):hover {
+    border-color: #9ba08e;
+}
+
+/* Foco accesible */
+
+.productSearch__option input[type="radio"]:focus-visible {
+    outline: 3px solid rgb(196 240 106 / 60%);
+    outline-offset: 3px;
+}
+
+/* Texto seleccionado */
+
+.productSearch__option:has(input[type="radio"]:checked) {
+    color: var(--color-text, #20211e);
+    font-weight: 500;
+}
+
+
+/* ========================================
+   SEPARADOR
+======================================== */
+
+.productSearch__divider {
+    width: 100%;
+    height: 1px;
+    margin: 0;
+
+    background: var(--color-border, #e4e3dc);
+    border: 0;
+}
+
+/* ========================================
+   BOTÓN LIMPIAR FILTROS
+======================================== */
+
+.productSearch__clear {
+    width: 100%;
+    min-height: 46px;
+    margin-top: 0;
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 900px) {
+    .productSearch {
+        padding: 20px;
+        gap: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .productSearch {
+        padding: 16px;
+        gap: 22px;
+        border-radius: 12px;
+    }
+
+    .productSearch__title {
+        font-size: 15px;
+    }
+
+    .productSearch__option {
+        min-height: 40px;
+        padding-inline: 8px;
+    }
+}
+
+
 
 /* ========================================
    3. LISTADO DE PRODUCTOS
