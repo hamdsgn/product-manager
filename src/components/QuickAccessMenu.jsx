@@ -1,4 +1,4 @@
-import { useContext, useState, useRef, useEffect } from 'react';
+import { useContext, useState, useRef } from 'react';
 import { CartContext } from '../context/CartContext';
 import { FavoritesContext } from '../context/FavoritesContext';
 import { RecentlyViewedContext } from '../context/RecentlyViewedContext.jsx';
@@ -7,6 +7,7 @@ import Cart from './Cart';
 import {ShoppingCart, Heart, Scale, History} from 'lucide-react';
 import { CompareContext } from '../context/CompareContext.jsx';
 import ComparePanel from './ComparePanel.jsx';
+import { useClickOutside } from '../hooks/useClickOutside.js';
 
 function QuickAccessMenu() {
     const [activePopover, setActivePopover] = useState(null);
@@ -16,20 +17,10 @@ function QuickAccessMenu() {
     const {productsCompare} = useContext(CompareContext)
     const menuRef = useRef(null)
     
-    useEffect(()=>{
-        const handleClickOutside = (e) => {
-            if(menuRef.current && !menuRef.current.contains(e.target)){
-                setActivePopover(null);
-            }
-        };
+    useClickOutside(menuRef, ()=> {
+        setActivePopover(null);
+    })
 
-        document.addEventListener("mousedown", handleClickOutside);
-
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside)
-        }
-    }, []);
-    
   return (
     <div className="quickAccess" ref={menuRef}>
 
