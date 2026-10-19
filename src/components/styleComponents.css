@@ -471,18 +471,57 @@ header h1 {
    8. COMPARADOR DE PRODUCTOS
 ======================================== */
 
-.products-compare {
+.compareGrid {
+    /* display: grid; */
+    /* grid-template-columns: repeat(1fr 1fr 1fr); */
     display: flex;
-    align-items: stretch;
     gap: 16px;
-list-style: none;
-    min-width: 0;
-    overflow-x: auto;
-    padding-block: 8px 20px;
+    width: 100%;
 }
 
-.products-compare > * {
-    flex-shrink: 0;
+.compareCard {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 0;
+    padding: 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #fff;
+    gap: 10px;
+}
+
+.compareCard img {
+    width: 100%;
+    height: 140px;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.compareCard p {
+    margin: 0;
+}
+
+.compareCard p:nth-of-type(1) {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.compareCard p:nth-of-type(2) {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.compareCard .btn {
+    margin-top: auto;
+    width: 100%;
+}
+
+@media (max-width: 640px) {
+    .compareGrid {
+        grid-template-columns: 1fr;
+    }
 }
 
 

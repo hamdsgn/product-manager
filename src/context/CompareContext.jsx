@@ -3,8 +3,13 @@ import { createContext, useState, useEffect } from "react";
 export const CompareContext = createContext();
 
 export const CompareProvider = ({children}) => {
-    const [productsCompare, setProductsCompare] = useState([]);
+    // const [productsCompare, setProductsCompare] = useState([]);
+    const [productsCompare, setProductsCompare] = useState(JSON.parse(localStorage.getItem('compare')) || []);
     const [showMessageCompare, setShowMessageCompare] = useState(false);
+
+    useEffect(()=> {
+        localStorage.setItem('compare', JSON.stringify(productsCompare))
+    }, [productsCompare])
 
     const handleProductsCompare = (product) => {
 		setProductsCompare(current =>{

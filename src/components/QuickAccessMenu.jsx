@@ -10,15 +10,12 @@ import ComparePanel from './ComparePanel.jsx';
 
 function QuickAccessMenu() {
     const [activePopover, setActivePopover] = useState(null);
-    const {cart} = useContext(CartContext);
+    const {cart, cartCount} = useContext(CartContext);
     const {favorites} = useContext(FavoritesContext);
     const {recentlyViewed} = useContext(RecentlyViewedContext);
     const {productsCompare} = useContext(CompareContext)
     const menuRef = useRef(null)
-    const cartCount = cart.reduce(
-        (total, item) => total + item.quantity,
-        0
-    );
+    
     useEffect(()=>{
         const handleClickOutside = (e) => {
             if(menuRef.current && !menuRef.current.contains(e.target)){
@@ -32,6 +29,7 @@ function QuickAccessMenu() {
             document.removeEventListener("mousedown", handleClickOutside)
         }
     }, []);
+    
   return (
     <div className="quickAccess" ref={menuRef}>
 
