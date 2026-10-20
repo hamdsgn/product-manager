@@ -14,8 +14,8 @@ function QuickAccessMenu() {
     const {cart, cartCount} = useContext(CartContext);
     const {favorites} = useContext(FavoritesContext);
     const {recentlyViewed} = useContext(RecentlyViewedContext);
-    const {productsCompare} = useContext(CompareContext)
-    const menuRef = useRef(null)
+    const {productsCompare} = useContext(CompareContext);
+    const menuRef = useRef(null);
     
     useClickOutside(menuRef, ()=> {
         setActivePopover(null);

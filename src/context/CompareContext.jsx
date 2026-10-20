@@ -61,7 +61,7 @@ export const CompareProvider = ({children}) => {
 
     return(
         <CompareContext.Provider 
-            value={{productsCompare, handleProductsCompare, handleRemoveProductCompare, showMessageCompare}}
+            value={{productsCompare, handleProductsCompare, handleRemoveProductCompare, showMessageCompare, setShowMessageCompare}}
         >
             {children}
         </CompareContext.Provider>

@@ -1,8 +1,10 @@
-import { useState, useEffect, useMemo, useCallback, use, useContext } from 'react'
+import { useState, useEffect, useMemo, useCallback, useContext, useRef } from 'react'
 import ProductList from './components/ProductList.jsx'
 import ProductSearch from './components/ProductSearch.jsx';
 import QuickAccessMenu from './components/QuickAccessMenu.jsx';
 import { CompareContext } from './context/CompareContext.jsx';
+import { useClickOutside } from './hooks/useClickOutside.js';
+import { Info, X } from 'lucide-react';
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -12,7 +14,8 @@ function App() {
   const [searchOrder, setSearchOrder] = useState(localStorage.getItem('searchOrder') || "1")
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
-  const {showMessageCompare} = useContext(CompareContext)
+  const {showMessageCompare, setShowMessageCompare} = useContext(CompareContext);
+  const messageRef = useRef(null);
 
 	const getProducts = useCallback(async ()=>{
 		setLoading(true);
@@ -83,7 +86,12 @@ function App() {
 	const currentProduct = filteredProducts.slice(startIndex, endIndex)
 	const totalPages = Math.ceil(totalProducts / productsPage);
 
-
+	
+	const handleCloseMessage = useCallback(() => {
+		setShowMessageCompare(false);
+	}, [setShowMessageCompare]);
+	
+	useClickOutside(messageRef, handleCloseMessage, showMessageCompare);
 	
 	
 	if (loading) {
@@ -109,7 +117,20 @@ function App() {
 			</header>
 
 			{showMessageCompare && (
-				<p className='message-compare'>Has alcanzado el limite de productos para comparar</p>
+				<div 
+					className='message-compare' 
+					ref={messageRef}
+				>
+					<Info size={18} strokeWidth={1.8} /> 
+					<span>Has alcanzado el limite de productos</span>
+					<button 
+						type="button"
+					    aria-label="Cerrar aviso"
+						onClick={handleCloseMessage}
+					>
+						<X  size={20} strokeWidth={1.8}/>
+					</button>
+				</div>
 			)}
 
 			<section>
