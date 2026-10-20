@@ -11,7 +11,6 @@ function App() {
   const [searchCat, setSearchCat] = useState(localStorage.getItem('searchCat') || "todas");
   const [searchOrder, setSearchOrder] = useState(localStorage.getItem('searchOrder') || "1")
   const [error, setError] = useState(null);
-  const [counter, setCounter] = useState(0);
   const [page, setPage] = useState(1);
   const {showMessageCompare} = useContext(CompareContext)
 
@@ -83,11 +82,6 @@ function App() {
 	const endIndex = startIndex + productsPage
 	const currentProduct = filteredProducts.slice(startIndex, endIndex)
 	const totalPages = Math.ceil(totalProducts / productsPage);
-	
-
-	const handleTester = useCallback(() => {
-		setCounter(current => current + 1);
-	}, []);
 
 
 	
@@ -148,7 +142,6 @@ function App() {
 								? 	"⚠️ No se encontraron productos que coincidan con la búsqueda." 
 								: 	<ProductList 
 										products={currentProduct}
-										onTest={handleTester}
 									/>
 							}
 						</div>

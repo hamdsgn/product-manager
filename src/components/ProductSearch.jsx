@@ -41,7 +41,7 @@ function ProductSearch({
                             checked={searchCat === "todas"}
                             onChange={(e) => setSearchCat(e.target.value)}
                         />
-                        Todas las categorías
+                        Todas las categorías ({products.length})
                     </label>
 
                     {categories.map((category) => (
@@ -56,7 +56,7 @@ function ProductSearch({
                                 checked={searchCat === category}
                                 onChange={(e) => setSearchCat(e.target.value)}
                             />
-                            {category}
+                            {category} ({category.length})
                         </label>
                     ))}
                 </div>

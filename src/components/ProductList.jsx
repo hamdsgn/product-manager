@@ -1,7 +1,7 @@
 import ProductCard from './ProductCard.jsx'
 import './styleComponents.css';
 
-const ProductList = ({products, onTest}) => {
+const ProductList = ({products}) => {
   return (
     <ul className='productList'>
         {
@@ -9,7 +9,6 @@ const ProductList = ({products, onTest}) => {
                 <ProductCard
                     key={product.id} 
                     product={product}
-                    onTest={onTest}
                 />
             ))
         }
