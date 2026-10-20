@@ -2,6 +2,39 @@ import { createContext, useState, useEffect, useMemo, useCallback } from "react"
 
 export const CartContext = createContext();
 
+function cartReducer(state, action) {
+	switch(action.type){
+		case "ADD":{
+			const product = action.payload;
+
+			const exist = state.some(
+				item => item.id === product.id
+			);
+
+			if(exist) {
+				return state.map(item => 
+					item.id === product.id
+					? {
+						...item, quantity: item.quantity + 1
+					} : item
+				);
+			}
+
+			return [...state, {...product, quantity:1}]
+
+		}
+
+		case "DECREASE":
+			return  state - 1;
+		
+		case "REMOVE":
+			return !state;
+		
+		default:
+			return state;
+	}
+}
+
 export const CartProvider = ({children}) => {
     const [cart, setCart] = useState(() => {
 		return JSON.parse(localStorage.getItem('cart')) || []
