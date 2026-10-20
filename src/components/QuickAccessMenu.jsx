@@ -1,10 +1,10 @@
-import { useContext, useState, useRef } from 'react';
+import { useContext, useState, useRef, useCallback } from 'react';
 import { CartContext } from '../context/CartContext';
 import { FavoritesContext } from '../context/FavoritesContext';
 import { RecentlyViewedContext } from '../context/RecentlyViewedContext.jsx';
 import FavoriteList from './FavoriteList.jsx';
 import Cart from './Cart';
-import {ShoppingCart, Heart, Scale, History} from 'lucide-react';
+import {ShoppingCart, Heart, Scale, History, X} from 'lucide-react';
 import { CompareContext } from '../context/CompareContext.jsx';
 import ComparePanel from './ComparePanel.jsx';
 import { useClickOutside } from '../hooks/useClickOutside.js';
@@ -16,10 +16,12 @@ function QuickAccessMenu() {
     const {recentlyViewed} = useContext(RecentlyViewedContext);
     const {productsCompare} = useContext(CompareContext);
     const menuRef = useRef(null);
+
+    const handleClosePopover = useCallback(() => {
+            setActivePopover(null);
+    }, []);
     
-    useClickOutside(menuRef, ()=> {
-        setActivePopover(null);
-    })
+    useClickOutside(menuRef, handleClosePopover);
 
   return (
     <div className="quickAccess" ref={menuRef}>
@@ -79,21 +81,30 @@ function QuickAccessMenu() {
             </button>
 
         </div>
-        {activePopover === 'cart' && (
-                <div className="popoverPanel">
-                    { cart.length > 0 
-                        ? <Cart/>
-                        : <p>Carrito Vacío</p>
-                    }
-                </div>
-        )}
+        
         {activePopover === 'favorite' && (
                 <div className="popoverPanel">
+                    <button 
+                        type="button"
+                        onClick={handleClosePopover}
+                        aria-label="Cerrar panel"
+                        className='btn btn--secondary'
+                    >
+                        <X size={18} strokeWidth={1.8}/>
+                    </button>
                     <FavoriteList/>
                 </div>
         )}
         {activePopover === "history" && (
             <div className="popoverPanel">
+                <button 
+                    type="button"
+                    onClick={handleClosePopover}
+                    aria-label="Cerrar panel"
+                    className='btn btn--secondary'
+                >
+                    <X size={18} strokeWidth={1.8}/>
+                </button>
                 { recentlyViewed.length === 0 
                     ?   <p>No has visitado ningún producto</p>
                     :   <ul>
@@ -103,18 +114,40 @@ function QuickAccessMenu() {
                                 </li>
                             ))}
                         </ul>
-
                 }
-                
             </div>
         )}
         {activePopover === "compare" && (
             <div className="popoverPanel">
+                <button 
+                    type="button"
+                    onClick={handleClosePopover}
+                    aria-label="Cerrar panel"
+                    className='btn btn--secondary'
+                >
+                    <X size={18} strokeWidth={1.8}/>
+                </button>
                 {productsCompare.length === 0 ? (
                     <p>No has elegido productos para comparar</p>
                 ):(
                     <ComparePanel/>
                 )}
+            </div>
+        )}
+        {activePopover === 'cart' && (
+            <div className="popoverPanel">
+                <button 
+                    type="button"
+                    onClick={handleClosePopover}
+                    aria-label="Cerrar panel"
+                    className='btn btn--secondary'
+                >
+                    <X size={18} strokeWidth={1.8}/>
+                </button>
+                { cart.length > 0 
+                    ? <Cart/>
+                    : <p>Carrito Vacío</p>
+                }
             </div>
         )}
     </div>

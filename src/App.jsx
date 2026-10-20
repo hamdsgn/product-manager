@@ -53,7 +53,6 @@ function App() {
 	},[searchCat, searchTerm, searchOrder])
 
 	const filteredProducts = useMemo(() => {
-		console.log("🔥 Calculando filtros");
 		const result =  products.filter(product => 
 							(searchTerm === "" ||
 								product.title.toLowerCase().includes(searchTerm.toLowerCase())
