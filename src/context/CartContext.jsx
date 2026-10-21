@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useMemo, useCallback } from "react";
+import { createContext, useReducer, useEffect, useMemo } from "react";
 
 export const CartContext = createContext();
 
@@ -38,6 +38,7 @@ function cartReducer(state, action) {
 		}
 		
 		case "REMOVE": {
+			const product = action.payload
 			return state.filter(item => item.id !== product.id);
 		}
 		
@@ -47,56 +48,37 @@ function cartReducer(state, action) {
 }
 
 export const CartProvider = ({children}) => {
-    const [cart, setCart] = useState(() => {
-		return JSON.parse(localStorage.getItem('cart')) || []
-	});
+
+	const [cart, dispatch] = useReducer(
+		cartReducer, 
+		[], 
+		() => JSON.parse(localStorage.getItem('cart')) || []
+	);
 
     useEffect(()=>{
 		localStorage.setItem('cart', JSON.stringify(cart))
 	}, [cart])
 
     const handleAddToCart = (product) => {
-        setCart(current => {
-            const exist = current.some(item => item.id === product.id);
-
-            if (exist) {
-				return current.map(item =>
-					item.id === product.id
-					? { ...item, quantity: item.quantity + 1 }
-					: item
-				);
-            }
-
-            return [...current, { ...product, quantity: 1 }];
-        });
+        dispatch({
+			type: "ADD",
+			payload: product
+		});
     };
 
 	const handleDecreaseQuantity = (product) => {
-
-		setCart(current => {
-			const productInCart = current.find(item => item.id === product.id)
-
-			if (!productInCart){
-				return current;
-			}
-
-			if(productInCart.quantity <= 1) {
-				return current.filter(item => item.id !== product.id)
-			}
-
-			return current.map( item => 
-				item.id === product.id
-				? {...item, quantity: item.quantity - 1}
-				: item
-			)
-			
-
+		dispatch({
+			type:"DECREASE", 
+			payload:product
 		});
 	}
 
-	const handleRemoveProduct = useCallback((product) => {
-		setCart (current => current.filter(item => item.id !== product.id));
-	}, [])
+	const handleRemoveProduct = (product) => {
+		dispatch({
+			type: "REMOVE",
+			payload: product
+		})
+	}
 
 	const totalCart = useMemo(() => {
 		return cart.reduce((acumulador, item)=> {
