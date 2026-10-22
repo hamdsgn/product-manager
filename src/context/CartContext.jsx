@@ -1,4 +1,4 @@
-import { createContext, useReducer, useEffect, useMemo } from "react";
+import { createContext, useReducer, useEffect } from "react";
 
 export const CartContext = createContext();
 
@@ -47,12 +47,25 @@ function cartReducer(state, action) {
 	}
 }
 
+function getInitialCart() {
+	try {
+		const initialCart = JSON.parse(localStorage.getItem('cart'));
+
+		if(!Array.isArray(initialCart)){
+			return[];
+		}
+		return initialCart;
+	} catch(e) {
+		return [];
+	}
+}
+
 export const CartProvider = ({children}) => {
 
 	const [cart, dispatch] = useReducer(
 		cartReducer, 
 		[], 
-		() => JSON.parse(localStorage.getItem('cart')) || []
+		getInitialCart
 	);
 
     useEffect(()=>{
@@ -80,18 +93,15 @@ export const CartProvider = ({children}) => {
 		})
 	}
 
-	const totalCart = useMemo(() => {
-		return cart.reduce((acumulador, item)=> {
-			return acumulador + (item.price * item.quantity);
-		}, 0);
-	}, [cart])
+	const totalCart = cart.reduce(
+		(total, item)=> total + (item.price * item.quantity),
+		0
+	);
 
-	const cartCount = useMemo(() => {
-		return cart.reduce(
-        	(total, item) => total + item.quantity,
-        	0
-    	);
-	}, [cart])
+	const cartCount = cart.reduce(
+		(total, item) => total + item.quantity,
+		0
+	);
 
     return(
         <CartContext.Provider value={{cart, handleAddToCart, handleDecreaseQuantity, handleRemoveProduct, totalCart, cartCount}}>
