@@ -56,7 +56,7 @@ function ProductSearch({
                                 checked={searchCat === category}
                                 onChange={(e) => setSearchCat(e.target.value)}
                             />
-                            {category} ({category.length})
+                            {category} ({products.filter(p=> p.category === category).length})
                         </label>
                     ))}
                 </div>
@@ -107,7 +107,7 @@ function ProductSearch({
                     <label className="productSearch__option">
                         <input
                             type="radio"
-                            name="price"
+                            name="orderBy"
                             value="4"
                             checked={String(searchOrder) === "4"}
                             onChange={(e) => setSearchOrder(e.target.value)}
