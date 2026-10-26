@@ -10,6 +10,8 @@ function ProductPage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    const controller = new AbortController();
+
     async function getProduct() {
       setLoading(true);
       setError(null);
@@ -17,7 +19,8 @@ function ProductPage() {
 
       try {
         const response = await fetch(
-          `https://fakestoreapi.com/products/${id}`
+          `https://fakestoreapi.com/products/${id}`,
+          { signal: controller.signal }
         );
 
         if (!response.ok) {
@@ -32,13 +35,21 @@ function ProductPage() {
 
         setProduct(data);
       } catch (e) {
-        setError(e.message);
+        if(e.name !== 'AbortError') {
+            setError(e.message);
+        }
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted){
+            setLoading(false);
+        }
       }
     }
 
     getProduct();
+
+    return () => {
+        controller.abort();
+    };
   }, [id]);
 
   if (loading) {
