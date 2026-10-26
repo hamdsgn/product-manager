@@ -1,10 +1,10 @@
-import { useContext } from 'react';
+import { useContext, memo } from 'react';
 import { FavoritesContext } from '../context/FavoritesContext.jsx';
-import { memo } from 'react';
 import { CartContext } from '../context/CartContext.jsx';
 import {ShoppingCart, HeartPlus, HeartMinus, Scale} from 'lucide-react';
 import { RecentlyViewedContext } from '../context/RecentlyViewedContext.jsx';
 import { CompareContext } from '../context/CompareContext.jsx';
+import { Link } from 'react-router-dom';
 
 const ProductCard = memo(({product}) => {
     const {handleAddToCart} = useContext(CartContext);
@@ -43,9 +43,13 @@ const ProductCard = memo(({product}) => {
                     <p><b>{product.price} €</b></p>
                     
                     <div className='cart-buttons'>
-                        <button className="btn btn--secondary" onClick={() => handlerecentlyViewed(product)}>
+                        <Link 
+                            to={`producto/${product.id}`}
+                            className="btn btn--secondary"
+                            onClick={() => handlerecentlyViewed(product)}
+                        >
                             Ver
-                        </button>
+                        </Link>
 
                         <button className="btn btn--accent" onClick={() => handleAddToCart(product)}>
                             <ShoppingCart size={18} strokeWidth={1.8} />
