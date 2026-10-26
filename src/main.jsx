@@ -10,15 +10,15 @@ import { BrowserRouter } from 'react-router-dom'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-    <CartProvider>
-      <FavoritesProvider>
-        <RecentlyViewedProvider>
-          <CompareProvider>
-            <App />
-          </CompareProvider>
-        </RecentlyViewedProvider>
-      </FavoritesProvider>
-    </CartProvider>
+      <CartProvider>
+        <FavoritesProvider>
+          <RecentlyViewedProvider>
+            <CompareProvider>
+              <App />
+            </CompareProvider>
+          </RecentlyViewedProvider>
+        </FavoritesProvider>
+      </CartProvider>
     </BrowserRouter>
   </StrictMode>,
 )
