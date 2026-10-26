@@ -5,9 +5,11 @@ import App from './App.jsx'
 import { CartProvider } from './context/CartContext.jsx'
 import { RecentlyViewedProvider } from './context/RecentlyViewedContext.jsx'
 import { CompareProvider } from './context/CompareContext.jsx'
+import { BrowserRouter } from 'react-router-dom'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+    <BrowserRouter>
     <CartProvider>
       <FavoritesProvider>
         <RecentlyViewedProvider>
@@ -17,5 +19,6 @@ createRoot(document.getElementById('root')).render(
         </RecentlyViewedProvider>
       </FavoritesProvider>
     </CartProvider>
+    </BrowserRouter>
   </StrictMode>,
 )

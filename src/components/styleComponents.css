@@ -83,10 +83,7 @@ a {
 }
 
 .main-content,
-/* .main-content__products, */
-/* .main-content__search, */
-header,
-.pagination {
+.section{
     padding-inline: clamp(20px, 7vw, 112px);
 }
 
