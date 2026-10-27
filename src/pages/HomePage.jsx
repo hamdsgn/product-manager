@@ -1,11 +1,11 @@
 import { useState, useEffect, useMemo, useCallback, useContext, useRef } from 'react'
 import ProductList from '../components/ProductList.jsx'
 import ProductSearch from '../components/ProductSearch.jsx';
-import QuickAccessMenu from '../components/QuickAccessMenu.jsx';
 import { CompareContext } from '../context/CompareContext.jsx';
 import { useClickOutside } from '../hooks/useClickOutside.js';
 import { Info, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import Header from '../components/Header.jsx';
 
 function HomePage() {
   const [products, setProducts] = useState([]);
@@ -111,17 +111,7 @@ function HomePage() {
 	
 	return (
 		<>
-			<header className='header section'>
-				<h1>Mi Tienda</h1>
-				<nav>
-					<ul>
-						<li>
-							<Link to="/favoritos">Favoritos</Link>
-						</li>
-					</ul>
-				</nav>
-				<QuickAccessMenu/>
-			</header>
+			<Header/>
 
 			{showMessageCompare && (
 				<div 

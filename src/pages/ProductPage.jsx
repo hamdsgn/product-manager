@@ -66,21 +66,24 @@ function ProductPage() {
   }
 
   return (
-    <main className="section">
-      <Link className='btn btn--secondary' to="/">Volver a la tienda</Link>
+    <>
+      <Header/>
+      <main className="section">
+        <Link className='btn btn--secondary' to="/">Volver a la tienda</Link>
 
-      <article>
-        <h1>{product.title}</h1>
-        <img
-          src={product.image}
-          alt={product.title}
-          width="250"
-        />
-        <p>{product.category}</p>
-        <p>{product.description}</p>
-        <p><strong>{product.price} €</strong></p>
-      </article>
-    </main>
+        <article>
+          <h1>{product.title}</h1>
+          <img
+            src={product.image}
+            alt={product.title}
+            width="250"
+          />
+          <p>{product.category}</p>
+          <p>{product.description}</p>
+          <p><strong>{product.price} €</strong></p>
+        </article>
+      </main>
+    </>
   );
 }
 

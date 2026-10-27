@@ -3,16 +3,14 @@ import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { FavoritesContext } from '../context/FavoritesContext.jsx';
 import ProductList from '../components/ProductList.jsx';
+import Header from '../components/Header.jsx';
 
 function FavoritesPage() {
   const { favorites, handleClearFavorites } = useContext(FavoritesContext);
 
   return (
     <>
-      <header className='section'>
-        <h1>Mis favoritos</h1>
-        <Link to="/">Volver a la tienda</Link>
-      </header>
+      <Header/>
       <main className='section'>
 
 
