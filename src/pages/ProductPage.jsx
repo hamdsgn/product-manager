@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import Header from '../components/Header';
 
 function ProductPage() {
   const { id } = useParams();
