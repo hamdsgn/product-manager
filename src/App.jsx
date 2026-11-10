@@ -1,7 +1,8 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import FavoritesPage from './pages/FavoritesPage.jsx';
 import HomePage from './pages/HomePage.jsx';
-import ProductPage from './pages/ProductPage.jsx';
+import ProductSinglePage from './pages/ProductSinglePage.jsx';
+import CategorySinglePage from './pages/CategorySinglePage.jsx';
 import CategoryPage from './pages/CategoryPage.jsx';
 
 function App() {
@@ -10,8 +11,8 @@ function App() {
       <Route path="/" element={<HomePage />} />
       <Route path="/favoritos" element={<FavoritesPage />} />
       <Route path="/categorias" element={<CategoryPage/>}/>
-      <Route path="/categorias/:category" element={<CategoryPage/>}/>
-	    <Route path='/producto/:id' element={<ProductPage/>}/>
+      <Route path="/categorias/:category" element={<CategorySinglePage/>}/>
+	    <Route path='/producto/:id' element={<ProductSinglePage/>}/>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

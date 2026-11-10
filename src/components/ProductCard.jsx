@@ -44,7 +44,7 @@ const ProductCard = memo(({product}) => {
                     
                     <div className='cart-buttons'>
                         <Link 
-                            to={`producto/${product.id}`}
+                            to={`/producto/${product.id}`}
                             className="btn btn--secondary"
                             onClick={() => handlerecentlyViewed(product)}
                         >
