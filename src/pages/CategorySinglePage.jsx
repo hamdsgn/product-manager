@@ -53,15 +53,25 @@ function CategorySinglePage(){
     }, [category]);
 
     if (loading) {
-        return <p className="loading-message">Cargando Categoría...</p>;
+        return (
+            <>
+                <Header/>
+                <main>
+                    <p className="loading-message">Cargando Categoría...</p>;   
+                </main>
+            </>
+        )
     }
 
     if (error) {
         return (
-        <main className="section">
-            <p className="error-message">{error}</p>
-            <Link className='btn btn--secondary' to="/">Volver a la tienda</Link>
-        </main>
+            <>
+                <Header/>
+                <main className="section">
+                    <p className="error-message">{error}</p>
+                    <Link className='btn btn--secondary' to="/">Volver a la tienda</Link>
+                </main>
+            </>
         );
     }
 
