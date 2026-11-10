@@ -79,7 +79,10 @@ function CategorySinglePage(){
         <>
             <Header/>
             <main className="section">
-                <Link to="/" className="btn btn--secondary">Volver a la tienda</Link>
+                <div className="flex space-between">
+                    <h1>{category}</h1>
+                    <Link to="/" className="btn btn--secondary">Volver a la tienda</Link>
+                </div>
                     {products.length === 0 ? (
                         <p>No hay productos en esta categoría</p>
                     ):(

@@ -969,3 +969,15 @@ textarea:focus {
         scroll-behavior: auto !important;
     }
 }
+
+.flex{
+    display: flex;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.space-between{
+    justify-content: space-between;
+}
+.flex h1{
+    margin: 0;
+}
