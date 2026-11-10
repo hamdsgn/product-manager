@@ -57,7 +57,7 @@ function CategorySinglePage(){
             <>
                 <Header/>
                 <main>
-                    <p className="loading-message">Cargando Categoría...</p>;   
+                    <p className="loading-message">Cargando Categoría...</p> 
                 </main>
             </>
         )
@@ -80,9 +80,13 @@ function CategorySinglePage(){
             <Header/>
             <main className="section">
                 <Link to="/" className="btn btn--secondary">Volver a la tienda</Link>
-                    <ProductList
-                        products={products}
-                    />
+                    {products.length === 0 ? (
+                        <p>No hay productos en esta categoría</p>
+                    ):(
+                        <ProductList
+                            products={products}
+                        />
+                    )}
             </main>
         
         </>
