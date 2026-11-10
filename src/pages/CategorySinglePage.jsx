@@ -47,6 +47,9 @@ function CategorySinglePage(){
             }
         }
         getCategory();
+        return() => {
+            controller.abort()
+        }
     }, [category]);
 
     if (loading) {
